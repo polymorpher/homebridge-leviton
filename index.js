@@ -35,9 +35,9 @@ class LevitonDecoraSmartPlatform {
     // on launch, init api, iterate over new devices
     api.on('didFinishLaunching', async () => {
       this.log.debug('didFinishLaunching')
-      const { devices, token } = await this.initialize(config)
-      const excludedModels = (config.excludeModels || []).map((name) => name.toUpperCase())
-      const excludedSerials = (config.excludeSerials || []).map((name) => name.toUpperCase())
+      const { devices, token } = await this.initialize()
+      const excludedModels = (this.config.excludedModels || []).map((name) => name.toUpperCase())
+      const excludedSerials = (this.config.excludedSerials || []).map((name) => name.toUpperCase())
       if (Array.isArray(devices) && devices.length > 0) {
         devices.forEach((device) => {
           if (!this.accessories.find((acc) => acc.context.device.serial === device.serial)) {
@@ -265,7 +265,7 @@ class LevitonDecoraSmartPlatform {
   }
 
   async addAccessory(device, token) {
-    this.log.info(`addAccessory ${device.name}`)
+    this.log.info(`addAccessory ${device.name} | ${device.model} | ${device.serial}`)
 
     // generate uuid based on device serial and create accessory
     const uuid = UUID.generate(device.serial)
