@@ -55,6 +55,10 @@ class LevitonDecoraSmartPlatform {
   subscriptionCallback(payload) {
     const accessory = this.accessories.find((acc) => acc.context.device.id === payload.id)
     const { id, power, brightness } = payload
+    if (!accessory) {
+      this.log.error(`subscriptionCallback: no accessory found for id: ${id}`)
+      return
+    }
 
     this.log.debug(`Socket: ${accessory.displayName} (${id}): ${power} ${brightness ? `${brightness}%` : ''}`)
 
